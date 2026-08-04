@@ -25,12 +25,12 @@ module.exports = {
     {
       name: "gameverse-dashboard",
       script: "node_modules/next/dist/bin/next",
-      args: "start -p 2935",
+      args: "start -p 3000",
       cwd: path.join(__dirname, "apps/dashboard"),
       interpreter: "node",
       env: {
         NODE_ENV: "production",
-        PORT: 2935,
+        PORT: 3000,
         DISCORD_BOT_TOKEN: process.env.DISCORD_BOT_TOKEN,
       },
       instances: 1,
