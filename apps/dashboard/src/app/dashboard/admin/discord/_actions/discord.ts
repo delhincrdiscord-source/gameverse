@@ -857,3 +857,70 @@ export async function updateRegistrationSettings(data: {
     return handleActionError(error);
   }
 }
+
+export async function sendDiscordDirectMessage(
+  discordUserId: string,
+  messageText: string,
+  embedJson?: any
+): Promise<ActionResult<{ messageId: string }>> {
+  try {
+    await requireAdmin();
+    await checkMutationRateLimit("discord:dm:send");
+
+    const token = process.env.DISCORD_BOT_TOKEN;
+    if (!token) {
+      return createErrorResponse("BAD_REQUEST", "DISCORD_BOT_TOKEN is not configured in environment.");
+    }
+
+    // Step 1: Open DM channel with target user
+    const channelResp = await fetch("https://discord.com/api/v10/users/@me/channels", {
+      method: "POST",
+      headers: {
+        Authorization: `Bot ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ recipient_id: discordUserId }),
+    });
+
+    if (!channelResp.ok) {
+      const errJson = await channelResp.json().catch(() => ({}));
+      return createErrorResponse("BAD_REQUEST", `Failed to open DM channel with user ${discordUserId}: ${JSON.stringify(errJson)}`);
+    }
+
+    const channelData = (await channelResp.json()) as { id: string };
+
+    // Step 2: Send DM payload
+    const msgResp = await fetch(`https://discord.com/api/v10/channels/${channelData.id}/messages`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bot ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        content: messageText || undefined,
+        embeds: embedJson ? [embedJson] : undefined,
+      }),
+    });
+
+    if (!msgResp.ok) {
+      const errJson = await msgResp.json().catch(() => ({}));
+      return createErrorResponse("BAD_REQUEST", `Failed to send DM message: ${JSON.stringify(errJson)}`);
+    }
+
+    const msgData = (await msgResp.json()) as { id: string };
+
+    const config = await discordRepository.getConfig();
+    if (config) {
+      await discordRepository.createActivityLog({
+        configId: config.id,
+        eventType: "BOT_EVENT",
+        action: "Direct message (DM) sent to user",
+        targetId: discordUserId,
+      });
+    }
+
+    return ok({ messageId: msgData.id });
+  } catch (error) {
+    return handleActionError(error);
+  }
+}

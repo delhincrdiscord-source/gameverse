@@ -129,24 +129,98 @@ export function DiscordAutomationRules() {
   ];
 
   return (
-    <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-6 space-y-4">
-      <div className="flex justify-between items-center">
-        <h2 className="text-lg font-bold text-[var(--foreground)] flex items-center gap-2">
-          <Zap className="h-5 w-5 text-amber-400" /> Trigger & Automation Rules
-        </h2>
-        <Button size="sm" className="gap-2"><Plus className="h-4 w-4" /> Create Automation</Button>
+    <div className="space-y-6">
+      <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-6 space-y-4">
+        <div className="flex justify-between items-center">
+          <h2 className="text-lg font-bold text-[var(--foreground)] flex items-center gap-2">
+            <Zap className="h-5 w-5 text-amber-400" /> Trigger & Automation Rules
+          </h2>
+          <Button size="sm" className="gap-2"><Plus className="h-4 w-4" /> Create Automation</Button>
+        </div>
+
+        <div className="space-y-3">
+          {rules.map((r, i) => (
+            <div key={i} className="p-4 rounded-lg border border-[var(--border)] bg-[var(--muted)]/30 space-y-1">
+              <div className="flex items-center gap-2 text-xs font-bold text-amber-400 uppercase">
+                <Zap className="h-3.5 w-3.5" /> {r.trigger}
+              </div>
+              <p className="text-sm font-semibold text-[var(--foreground)]">{r.action}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
-      <div className="space-y-3">
-        {rules.map((r, i) => (
-          <div key={i} className="p-4 rounded-lg border border-[var(--border)] bg-[var(--muted)]/30 space-y-1">
-            <div className="flex items-center gap-2 text-xs font-bold text-amber-400 uppercase">
-              <Zap className="h-3.5 w-3.5" /> {r.trigger}
-            </div>
-            <p className="text-sm font-semibold text-[var(--foreground)]">{r.action}</p>
-          </div>
-        ))}
-      </div>
+      <DiscordDirectMessageTester />
+    </div>
+  );
+}
+
+export function DiscordDirectMessageTester() {
+  const [targetUserId, setTargetUserId] = useState("");
+  const [messageText, setMessageText] = useState("Hello! Your registration pass for Delhi NCR Gameverse 2026 is confirmed! 🎫");
+  const [sending, setSending] = useState(false);
+  const [status, setStatus] = useState("");
+
+  const handleSendDm = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!targetUserId) return;
+    setSending(true);
+    setStatus("");
+    try {
+      const { sendDiscordDirectMessage } = await import("../_actions/discord");
+      const res = await sendDiscordDirectMessage(targetUserId, messageText);
+      if (res.success) {
+        setStatus("✅ Direct Message (DM) successfully sent to Discord user!");
+        setTargetUserId("");
+      } else {
+        setStatus(`❌ Error sending DM: ${res.error}`);
+      }
+    } catch (err: any) {
+      setStatus(`❌ Error: ${err.message}`);
+    } finally {
+      setSending(false);
+    }
+  };
+
+  return (
+    <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-6 space-y-4">
+      <h2 className="text-lg font-bold text-[var(--foreground)] flex items-center gap-2">
+        <Play className="h-5 w-5 text-indigo-400" /> Direct Message (DM) Tester
+      </h2>
+      <p className="text-xs text-[var(--muted-foreground)]">
+        Test sending automated DMs directly to a Discord user ID using the Bot token API.
+      </p>
+
+      <form onSubmit={handleSendDm} className="space-y-4">
+        <div>
+          <Label htmlFor="targetUserId">Discord User Snowflake ID</Label>
+          <Input
+            id="targetUserId"
+            placeholder="e.g. 123456789012345678"
+            value={targetUserId}
+            onChange={(e) => setTargetUserId(e.target.value)}
+            className="mt-1 font-mono"
+            required
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="messageText">DM Message Body</Label>
+          <Input
+            id="messageText"
+            value={messageText}
+            onChange={(e) => setMessageText(e.target.value)}
+            className="mt-1"
+            required
+          />
+        </div>
+
+        <Button type="submit" disabled={sending} className="gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold">
+          <Play className="h-4 w-4" /> {sending ? "Sending DM..." : "Send DM to User"}
+        </Button>
+
+        {status && <p className="text-xs font-semibold mt-2">{status}</p>}
+      </form>
     </div>
   );
 }
