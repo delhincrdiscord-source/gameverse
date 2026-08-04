@@ -867,9 +867,25 @@ export async function sendDiscordDirectMessage(
     await requireAdmin();
     await checkMutationRateLimit("discord:dm:send");
 
-    const token = process.env.DISCORD_BOT_TOKEN;
+    let token = process.env.DISCORD_BOT_TOKEN;
     if (!token) {
-      return createErrorResponse("BAD_REQUEST", "DISCORD_BOT_TOKEN is not configured in environment.");
+      try {
+        const config = (await discordRepository.getConfig()) as any;
+        if (config?.botTokenEncrypted) {
+          const { decrypt, isEncrypted } = await import("@/lib/encryption");
+          if (isEncrypted(config.botTokenEncrypted)) {
+            token = decrypt(config.botTokenEncrypted);
+          } else {
+            token = config.botTokenEncrypted;
+          }
+        }
+      } catch {
+        // ignore
+      }
+    }
+
+    if (!token) {
+      return createErrorResponse("BAD_REQUEST", "DISCORD_BOT_TOKEN is not configured in environment or Discord Settings.");
     }
 
     // Step 1: Open DM channel with target user

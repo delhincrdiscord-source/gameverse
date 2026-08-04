@@ -134,10 +134,27 @@ function escapeXml(unsafe: string): string {
  * 2. Ticket DM to the user with full pass card
  */
 export async function sendRegistrationDiscordNotifications(payload: RegistrationNotificationPayload): Promise<void> {
-  const botToken = process.env.DISCORD_BOT_TOKEN;
+  let botToken = process.env.DISCORD_BOT_TOKEN;
 
   if (!botToken) {
-    logger.warn("DISCORD_BOT_TOKEN not set in environment, skipping Discord registration notifications");
+    try {
+      const { prisma } = await import("@gameverse/database");
+      const { decrypt, isEncrypted } = await import("@/lib/encryption");
+      const config = await prisma.discordConfig.findFirst({ orderBy: { createdAt: "desc" } });
+      if (config?.botTokenEncrypted) {
+        if (isEncrypted(config.botTokenEncrypted)) {
+          botToken = decrypt(config.botTokenEncrypted);
+        } else {
+          botToken = config.botTokenEncrypted;
+        }
+      }
+    } catch {
+      // ignore
+    }
+  }
+
+  if (!botToken) {
+    logger.warn("DISCORD_BOT_TOKEN not set in environment or database, skipping Discord registration notifications");
     return;
   }
 
