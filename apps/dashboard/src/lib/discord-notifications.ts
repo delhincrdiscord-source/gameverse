@@ -180,6 +180,11 @@ export async function sendRegistrationDiscordNotifications(payload: Registration
 
   // ── 2. Send User DM Ticket Notification ─────────────────────────────────────────
   try {
+    if (!payload.discordUserId) {
+      logger.info({ discordUsername: payload.discordUsername }, "No numeric Discord User ID provided, skipping DM ticket notification");
+      return;
+    }
+
     // A. Open DM Channel with user
     const dmChannelRes = await fetch("https://discord.com/api/v10/users/@me/channels", {
       method: "POST",

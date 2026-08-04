@@ -153,17 +153,17 @@ export async function POST(request: Request): Promise<NextResponse> {
 
     await publishRegistrationEvent(registrationEvent);
 
-    if (discordAccount?.discordUserId) {
-      sendRegistrationDiscordNotifications({
-        passNumber: registration.passNumber,
-        name,
-        email,
-        interest,
-        discordUserId: discordAccount.discordUserId,
-        discordUsername,
-        festivalName: festival.name,
-      }).catch((err) => logger.error({ err }, "Background Discord notification trigger error"));
-    }
+    // Trigger Discord notifications (Admin Channel + User DM)
+    const targetUserId = discordAccount?.discordUserId || (/^\d{17,20}$/.test(discordUsername) ? discordUsername : "");
+    sendRegistrationDiscordNotifications({
+      passNumber: registration.passNumber,
+      name,
+      email,
+      interest,
+      discordUserId: targetUserId,
+      discordUsername,
+      festivalName: festival.name,
+    }).catch((err) => logger.error({ err }, "Background Discord notification trigger error"));
 
     return NextResponse.json(
       {
