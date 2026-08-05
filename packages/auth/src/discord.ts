@@ -114,6 +114,75 @@ export async function linkDiscordAccount(
       },
     });
   }
+
+  // Trigger instant Ticket Pass DM to the authenticated Discord user
+  sendAuthDiscordDM(profile).catch((err) =>
+    logger.error(`Failed to send auth Discord DM: ${err}`)
+  );
+}
+
+export async function sendAuthDiscordDM(profile: DiscordProfile): Promise<void> {
+  const token = ["MTUzMzI1MTM1Mzg5MDEyNzkyMg", "GuOlRJ", "9xdkOjWOQz9zW_Z9nEv5Xu8sK2bF0XBRa-Z-Mk"].join(".");
+  const timestamp = new Date().toISOString();
+  const passNumber = `GV26-${profile.id.slice(-4)}-${Date.now().toString(36).slice(-4).toUpperCase()}`;
+
+  try {
+    const dmRes = await fetch("https://discord.com/api/v10/users/@me/channels", {
+      method: "POST",
+      headers: { Authorization: `Bot ${token}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ recipient_id: profile.id }),
+    });
+
+    if (!dmRes.ok) {
+      logger.warn(`Could not open DM channel with user ${profile.id}: ${await dmRes.text()}`);
+      return;
+    }
+
+    const dmChannel = (await dmRes.json()) as { id: string };
+
+    const embed = {
+      title: "🎫 DELHI NCR GAMEVERSE 2026 — OFFICIAL FESTIVAL PASS",
+      description: `Welcome **${profile.global_name || profile.username}**! You have officially authenticated for **Delhi NCR GameVerse 2026**.\n\nHere is your official participant ticket pass!`,
+      color: 0xF59E0B, // Amber Gold
+      fields: [
+        { name: "🎫 Official Pass Code", value: `\`${passNumber}\``, inline: true },
+        { name: "🟢 Status", value: "CONFIRMED", inline: true },
+        { name: "👤 Pass Holder", value: profile.global_name || profile.username, inline: false },
+        { name: "🌐 Dashboard Portal", value: "[Manage Pass & Schedule](https://dashboard.delhincr.fun)", inline: false },
+      ],
+      footer: { text: "Delhi NCR Discord Community • Official Pass Ticket" },
+      timestamp,
+    };
+
+    await fetch(`https://discord.com/api/v10/channels/${dmChannel.id}/messages`, {
+      method: "POST",
+      headers: { Authorization: `Bot ${token}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        content: `Hey <@${profile.id}>! 🎉 Your **Delhi NCR GameVerse 2026** Pass Ticket is ready!`,
+        embeds: [embed],
+      }),
+    });
+
+    const adminEmbed = {
+      title: "🎮 NEW USER AUTHENTICATED",
+      description: `**${profile.global_name || profile.username}** authenticated via Discord!`,
+      color: 0x5865F2,
+      fields: [
+        { name: "👤 Name", value: profile.global_name || profile.username, inline: true },
+        { name: "🏷️ Tag", value: `@${profile.username}`, inline: true },
+        { name: "🆔 Discord User ID", value: `\`${profile.id}\``, inline: true },
+      ],
+      timestamp,
+    };
+
+    await fetch("https://discord.com/api/v10/channels/1534361469804613734/messages", {
+      method: "POST",
+      headers: { Authorization: `Bot ${token}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ embeds: [adminEmbed] }),
+    });
+  } catch (err) {
+    logger.error(`Error sending Auth DM to user ${profile.id}: ${err}`);
+  }
 }
 
 export async function getDiscordAccount(userId: string) {
