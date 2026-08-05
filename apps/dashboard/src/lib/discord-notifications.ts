@@ -240,7 +240,14 @@ export async function sendRegistrationDiscordNotifications(payload: Registration
 
     const dmChannel = (await dmChannelRes.json()) as { id: string };
 
-    // B. Create DM Pass Embed
+    // B. Create SVG Ticket Image & Form Data
+    const svgTicket = generateTicketSvg({
+      passNumber: payload.passNumber,
+      name: payload.name,
+      interest: payload.interest,
+      festivalName: payload.festivalName,
+    });
+
     const userTicketEmbed = {
       title: "🎫 DELHI NCR GAMEVERSE 2026 — OFFICIAL FESTIVAL PASS",
       description: `Congratulations **${payload.name}**! You are officially registered for **${payload.festivalName}**.\n\nKeep this ticket code safe for event check-in and exclusive tournament access!`,
@@ -252,22 +259,29 @@ export async function sendRegistrationDiscordNotifications(payload: Registration
         { name: "👤 Pass Holder", value: payload.name, inline: false },
         { name: "🌐 Dashboard Portal", value: "[Manage Pass & Event Schedule](https://dashboard.delhincr.fun)", inline: false },
       ],
+      image: { url: "attachment://ticket.svg" },
       footer: { text: "Delhi NCR Discord Community • Official Pass Ticket" },
       timestamp,
     };
+
+    const formData = new FormData();
+    formData.append(
+      "payload_json",
+      JSON.stringify({
+        content: `Hey <@${payload.discordUserId}>! 🎉 Your **Delhi NCR GameVerse 2026** Registration is complete!`,
+        embeds: [userTicketEmbed],
+      })
+    );
+    formData.append("files[0]", new Blob([svgTicket], { type: "image/svg+xml" }), "ticket.svg");
 
     await fetch(`https://discord.com/api/v10/channels/${dmChannel.id}/messages`, {
       method: "POST",
       headers: {
         Authorization: `Bot ${botToken}`,
-        "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        content: `Hey <@${payload.discordUserId}>! 🎉 Your **Delhi NCR GameVerse 2026** Registration is complete!`,
-        embeds: [userTicketEmbed],
-      }),
+      body: formData,
     });
-    logger.info({ userId: payload.discordUserId }, "Successfully sent DM ticket to user");
+    logger.info({ userId: payload.discordUserId }, "Successfully sent DM ticket with SVG image card to user");
   } catch (err) {
     logger.error({ err }, "Failed to send DM ticket to user");
   }
