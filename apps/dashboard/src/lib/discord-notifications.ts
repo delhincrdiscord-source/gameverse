@@ -182,6 +182,17 @@ export async function sendRegistrationDiscordNotifications(payload: Registration
 
   // ── 1. Send Admin Embed Notification ──────────────────────────────────────────
   try {
+    let adminChannelId = "1534361469804613734";
+    try {
+      const { prisma } = await import("@gameverse/database");
+      const config = await prisma.discordConfig.findFirst({ orderBy: { createdAt: "desc" } });
+      if (config?.registrationsChannelId) {
+        adminChannelId = config.registrationsChannelId;
+      }
+    } catch {
+      // ignore
+    }
+
     const adminEmbed = {
       title: "🎮 NEW FESTIVAL REGISTRATION",
       description: `**${payload.name}** has registered for **${payload.festivalName}**!`,
@@ -198,7 +209,7 @@ export async function sendRegistrationDiscordNotifications(payload: Registration
       timestamp,
     };
 
-    await fetch(`https://discord.com/api/v10/channels/${ADMIN_REGISTRATION_CHANNEL_ID}/messages`, {
+    await fetch(`https://discord.com/api/v10/channels/${adminChannelId}/messages`, {
       method: "POST",
       headers: {
         Authorization: `Bot ${botToken}`,
