@@ -665,7 +665,7 @@ export default function ParticipantDashboard() {
               { href: "/dashboard/events", icon: <Calendar className="h-5 w-5" />, label: "Register for Event", color: "from-blue-500/20 to-blue-500/5 hover:from-blue-500/30 border-blue-500/20", iconColor: "text-blue-500" },
               { href: "/dashboard/events", icon: <Gamepad2 className="h-5 w-5" />, label: "View Events", color: "from-emerald-500/20 to-emerald-500/5 hover:from-emerald-500/30 border-emerald-500/20", iconColor: "text-emerald-500" },
               { href: "/dashboard/leaderboard", icon: <Trophy className="h-5 w-5" />, label: "View Leaderboard", color: "from-yellow-500/20 to-yellow-500/5 hover:from-yellow-500/30 border-yellow-500/20", iconColor: "text-yellow-500" },
-              { href: "/dashboard/rewards", icon: <Gift className="h-5 w-5" />, label: "Claim Rewards", color: "from-pink-500/20 to-pink-500/5 hover:from-pink-500/30 border-pink-500/20", iconColor: "text-pink-500" },
+              { href: "/dashboard/badges", icon: <Award className="h-5 w-5" />, label: "View Badges", color: "from-pink-500/20 to-pink-500/5 hover:from-pink-500/30 border-pink-500/20", iconColor: "text-pink-500" },
               { href: "/dashboard/settings/profile", icon: <User className="h-5 w-5" />, label: "Edit Profile", color: "from-purple-500/20 to-purple-500/5 hover:from-purple-500/30 border-purple-500/20", iconColor: "text-purple-500" },
               { href: "/dashboard/achievements", icon: <Award className="h-5 w-5" />, label: "Achievements", color: "from-orange-500/20 to-orange-500/5 hover:from-orange-500/30 border-orange-500/20", iconColor: "text-orange-500" },
             ].map((action) => (

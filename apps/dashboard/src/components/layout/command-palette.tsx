@@ -49,7 +49,6 @@ export function CommandPalette({ open, onClose }: CommandPaletteProps) {
     { id: "leaderboard", label: "Leaderboard", icon: BarChart3, href: "/dashboard/leaderboard", section: "Navigation" },
     { id: "achievements", label: "Achievements", icon: Megaphone, href: "/dashboard/achievements", section: "Navigation" },
     { id: "badges", label: "Badges", icon: Megaphone, href: "/dashboard/badges", section: "Navigation" },
-    { id: "rewards", label: "Rewards", icon: Megaphone, href: "/dashboard/rewards", section: "Navigation" },
     { id: "hall-of-fame", label: "Hall of Fame", icon: Megaphone, href: "/dashboard/hall-of-fame", section: "Navigation" },
     { id: "notifications", label: "Notifications", icon: Bell, href: "/dashboard/notifications", section: "Navigation" },
     { id: "settings", label: "Settings", icon: Settings, href: "/dashboard/settings", section: "Navigation" },

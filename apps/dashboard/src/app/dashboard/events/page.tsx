@@ -405,7 +405,7 @@ function EventDetailModal({
 }) {
   const [event, setEvent] = useState<EventDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<"overview" | "schedule" | "rewards" | "faq">("overview");
+  const [activeTab, setActiveTab] = useState<"overview" | "schedule" | "faq">("overview");
   const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -571,7 +571,7 @@ function EventDetailModal({
 
                 {/* Tabs */}
                 <div className="flex border-b border-[var(--border)] px-4">
-                  {(["overview", "schedule", "rewards", "faq"] as const).map((tab) => (
+                  {(["overview", "schedule", "faq"] as const).map((tab) => (
                     <button
                       key={tab}
                       onClick={() => setActiveTab(tab)}
@@ -681,23 +681,6 @@ function EventDetailModal({
                           <CountdownDisplay targetDate={event.startDate} />
                         </div>
                       )}
-                    </div>
-                  )}
-
-                  {activeTab === "rewards" && (
-                    <div className="space-y-3">
-                      <h4 className="text-xs font-semibold uppercase tracking-wider text-[var(--muted-foreground)]">Rewards & Prizes</h4>
-                      {[
-                        { place: "🥇 1st Place", reward: "Premium Reward + Max Points", color: "border-yellow-500/30 bg-yellow-500/5" },
-                        { place: "🥈 2nd Place", reward: "Standard Reward + Points", color: "border-gray-400/30 bg-gray-400/5" },
-                        { place: "🥉 3rd Place", reward: "Participation Reward + Points", color: "border-orange-500/30 bg-orange-500/5" },
-                        { place: "🎮 All Participants", reward: "XP Points + Participation Badge", color: "border-[var(--border)] bg-[var(--muted)]/30" },
-                      ].map(({ place, reward, color }) => (
-                        <div key={place} className={`flex items-center justify-between rounded-xl border p-3 ${color}`}>
-                          <span className="text-sm font-medium text-[var(--foreground)]">{place}</span>
-                          <span className="text-xs text-[var(--muted-foreground)]">{reward}</span>
-                        </div>
-                      ))}
                     </div>
                   )}
 
@@ -977,7 +960,7 @@ export default function ParticipantEventsPage() {
           </p>
           <div className="mt-4 flex items-center gap-4 text-xs text-[var(--muted-foreground)]">
             <span className="flex items-center gap-1"><Flame className="h-3.5 w-3.5 text-orange-500" /> {total} events available</span>
-            <span className="flex items-center gap-1"><Award className="h-3.5 w-3.5 text-yellow-500" /> Earn points & rewards</span>
+            <span className="flex items-center gap-1"><Award className="h-3.5 w-3.5 text-yellow-500" /> Earn points & badges</span>
             <span className="flex items-center gap-1"><Shield className="h-3.5 w-3.5 text-[var(--primary)]" /> Verified events</span>
           </div>
         </div>
