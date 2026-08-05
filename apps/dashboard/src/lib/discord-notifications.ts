@@ -133,32 +133,46 @@ function escapeXml(unsafe: string): string {
  * 1. Embed notification to Admin Channel (1533252061452308682)
  * 2. Ticket DM to the user with full pass card
  */
-export async function sendRegistrationDiscordNotifications(payload: RegistrationNotificationPayload): Promise<void> {
-  let botToken = process.env.DISCORD_BOT_TOKEN;
-
-  if (!botToken) {
-    try {
-      const { prisma } = await import("@gameverse/database");
-      const { decrypt, isEncrypted } = await import("@/lib/encryption");
-      const config = await prisma.discordConfig.findFirst({ orderBy: { createdAt: "desc" } });
-      if (config?.botTokenEncrypted) {
-        if (isEncrypted(config.botTokenEncrypted)) {
-          botToken = decrypt(config.botTokenEncrypted);
-        } else {
-          botToken = config.botTokenEncrypted;
-        }
-      }
-    } catch {
-      // ignore
-    }
+export async function getEffectiveDiscordBotToken(): Promise<string | null> {
+  if (process.env.DISCORD_BOT_TOKEN) {
+    const clean = process.env.DISCORD_BOT_TOKEN.trim().replace(/^Bot\s+/i, "").replace(/^["']|["']$/g, "");
+    if (clean) return clean;
   }
 
+  try {
+    const { prisma } = await import("@gameverse/database");
+    const { decrypt, isEncrypted } = await import("@/lib/encryption");
+    const config = await prisma.discordConfig.findFirst({ orderBy: { createdAt: "desc" } });
+    if (!config?.botTokenEncrypted) return null;
+
+    const raw = config.botTokenEncrypted.trim().replace(/^Bot\s+/i, "").replace(/^["']|["']$/g, "");
+
+    if (raw.split(".").length === 3 && !raw.includes(":")) {
+      return raw;
+    }
+
+    if (isEncrypted(raw)) {
+      try {
+        const decrypted = decrypt(raw).trim().replace(/^Bot\s+/i, "").replace(/^["']|["']$/g, "");
+        if (decrypted) return decrypted;
+      } catch {
+        // ignore
+      }
+    }
+
+    return raw;
+  } catch {
+    return null;
+  }
+}
+
+export async function sendRegistrationDiscordNotifications(payload: RegistrationNotificationPayload): Promise<void> {
+  const botToken = await getEffectiveDiscordBotToken();
+
   if (!botToken) {
-    logger.warn("DISCORD_BOT_TOKEN not set in environment or database, skipping Discord registration notifications");
+    logger.warn("DISCORD_BOT_TOKEN not found in environment or database, skipping Discord registration notifications");
     return;
   }
-
-  botToken = botToken.trim().replace(/^Bot\s+/i, "").replace(/^["']|["']$/g, "");
 
   logger.info({ passNumber: payload.passNumber, discordUserId: payload.discordUserId }, "Initiating Discord registration notifications");
 
