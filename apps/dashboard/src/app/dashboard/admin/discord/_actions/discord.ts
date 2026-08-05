@@ -110,7 +110,8 @@ export async function updateDiscordConfigAction(
 
     const encryptedData: Record<string, unknown> = { ...validatedData };
     if (validatedData.botToken) {
-      encryptedData.botToken = encrypt(validatedData.botToken);
+      const cleanToken = validatedData.botToken.trim().replace(/^Bot\s+/i, "").replace(/^["']|["']$/g, "");
+      encryptedData.botToken = encrypt(cleanToken);
     }
     if (validatedData.clientSecret) {
       encryptedData.clientSecret = encrypt(validatedData.clientSecret);
