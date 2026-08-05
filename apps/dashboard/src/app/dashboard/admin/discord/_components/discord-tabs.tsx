@@ -7,11 +7,19 @@ import { Label } from "@gameverse/ui/label";
 import { Hash, Shield, Zap, Webhook, Terminal, CheckCircle2, Plus, Play } from "lucide-react";
 
 export function DiscordChannelMapping() {
-  const [channels, setChannels] = useState([
-    { event: "Valorant Championship", discordChannel: "#valorant-tournament", type: "Text Channel" },
-    { event: "BGMI Showdown", discordChannel: "#bgmi-stage-1", type: "Stage Channel" },
-    { event: "Community Lounge", discordChannel: "🔊 Gaming Lounge", type: "Voice Channel" },
-  ]);
+  const [channels, setChannels] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  React.useEffect(() => {
+    import("../_actions/discord").then(({ getDiscordChannels }) => {
+      getDiscordChannels().then((res) => {
+        if (res.success && Array.isArray(res.data)) {
+          setChannels(res.data);
+        }
+        setLoading(false);
+      }).catch(() => setLoading(false));
+    });
+  }, []);
 
   return (
     <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-6 space-y-4">
@@ -22,43 +30,60 @@ export function DiscordChannelMapping() {
         <Button size="sm" className="gap-2"><Plus className="h-4 w-4" /> Add Channel Mapping</Button>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-left text-sm">
-          <thead className="border-b border-[var(--border)] text-xs text-[var(--muted-foreground)] uppercase">
-            <tr>
-              <th className="py-3 px-4">Event / Module</th>
-              <th className="py-3 px-4">Mapped Discord Channel</th>
-              <th className="py-3 px-4">Channel Type</th>
-              <th className="py-3 px-4 text-right">Status</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-[var(--border)]">
-            {channels.map((ch, i) => (
-              <tr key={i} className="hover:bg-[var(--muted)]/40">
-                <td className="py-3 px-4 font-semibold text-[var(--foreground)]">{ch.event}</td>
-                <td className="py-3 px-4 font-mono text-indigo-400 font-bold">{ch.discordChannel}</td>
-                <td className="py-3 px-4 text-xs text-[var(--muted-foreground)]">{ch.type}</td>
-                <td className="py-3 px-4 text-right">
-                  <span className="text-xs font-bold text-green-400 bg-green-500/10 px-2 py-0.5 rounded border border-green-500/20">
-                    Synced
-                  </span>
-                </td>
+      {loading ? (
+        <p className="text-xs text-[var(--muted-foreground)]">Loading channels...</p>
+      ) : channels.length === 0 ? (
+        <div className="text-center py-8 border border-dashed border-[var(--border)] rounded-lg">
+          <Hash className="h-8 w-8 text-[var(--muted-foreground)] mx-auto mb-2 opacity-50" />
+          <p className="text-sm font-semibold text-[var(--foreground)]">No Discord Channels Mapped Yet</p>
+          <p className="text-xs text-[var(--muted-foreground)]">Click "Add Channel Mapping" to map a Discord channel to your festival events.</p>
+        </div>
+      ) : (
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-sm">
+            <thead className="border-b border-[var(--border)] text-xs text-[var(--muted-foreground)] uppercase">
+              <tr>
+                <th className="py-3 px-4">Channel Name</th>
+                <th className="py-3 px-4">Discord Channel ID</th>
+                <th className="py-3 px-4">Channel Type</th>
+                <th className="py-3 px-4 text-right">Status</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody className="divide-y divide-[var(--border)]">
+              {channels.map((ch, i) => (
+                <tr key={i} className="hover:bg-[var(--muted)]/40">
+                  <td className="py-3 px-4 font-semibold text-[var(--foreground)]">{ch.name}</td>
+                  <td className="py-3 px-4 font-mono text-indigo-400 font-bold">{ch.channelId}</td>
+                  <td className="py-3 px-4 text-xs text-[var(--muted-foreground)]">{ch.type || "Text Channel"}</td>
+                  <td className="py-3 px-4 text-right">
+                    <span className="text-xs font-bold text-green-400 bg-green-500/10 px-2 py-0.5 rounded border border-green-500/20">
+                      Synced
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }
 
 export function DiscordRoleMapping() {
-  const [roleMappings, setRoleMappings] = useState([
-    { platformRole: "ADMIN", discordRole: "👑 Admin / Organizer", autoAssign: true },
-    { platformRole: "MODERATOR", discordRole: "🛡️ Community Moderator", autoAssign: true },
-    { platformRole: "MEMBER", discordRole: "🎮 Registered Gamer", autoAssign: true },
-    { platformRole: "WINNER", discordRole: "🏆 Champion 2026", autoAssign: false },
-  ]);
+  const [roleMappings, setRoleMappings] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  React.useEffect(() => {
+    import("../_actions/discord").then(({ getDiscordRoleMappings }) => {
+      getDiscordRoleMappings().then((res) => {
+        if (res.success && Array.isArray(res.data)) {
+          setRoleMappings(res.data);
+        }
+        setLoading(false);
+      }).catch(() => setLoading(false));
+    });
+  }, []);
 
   return (
     <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-6 space-y-4">
@@ -69,20 +94,30 @@ export function DiscordRoleMapping() {
         <Button size="sm" className="gap-2"><Plus className="h-4 w-4" /> Add Role Mapping</Button>
       </div>
 
-      <div className="grid gap-3 md:grid-cols-2">
-        {roleMappings.map((rm, i) => (
-          <div key={i} className="p-4 rounded-lg border border-[var(--border)] bg-[var(--muted)]/30 space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="font-bold text-sm text-[var(--foreground)]">{rm.platformRole}</span>
-              <span className="text-xs font-mono font-bold text-indigo-400">{rm.discordRole}</span>
+      {loading ? (
+        <p className="text-xs text-[var(--muted-foreground)]">Loading role mappings...</p>
+      ) : roleMappings.length === 0 ? (
+        <div className="text-center py-8 border border-dashed border-[var(--border)] rounded-lg">
+          <Shield className="h-8 w-8 text-[var(--muted-foreground)] mx-auto mb-2 opacity-50" />
+          <p className="text-sm font-semibold text-[var(--foreground)]">No Role Mappings Configured Yet</p>
+          <p className="text-xs text-[var(--muted-foreground)]">Map platform user roles to automatic Discord roles when users log in.</p>
+        </div>
+      ) : (
+        <div className="grid gap-3 md:grid-cols-2">
+          {roleMappings.map((rm, i) => (
+            <div key={i} className="p-4 rounded-lg border border-[var(--border)] bg-[var(--muted)]/30 space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="font-bold text-sm text-[var(--foreground)]">{rm.platformRole}</span>
+                <span className="text-xs font-mono font-bold text-indigo-400">{rm.discordRoleId}</span>
+              </div>
+              <div className="flex justify-between items-center text-xs text-[var(--muted-foreground)]">
+                <span>Auto-assign on login:</span>
+                <span className="font-semibold text-green-400">{rm.autoAssign ? "ENABLED" : "MANUAL"}</span>
+              </div>
             </div>
-            <div className="flex justify-between items-center text-xs text-[var(--muted-foreground)]">
-              <span>Auto-assign on login:</span>
-              <span className="font-semibold text-green-400">{rm.autoAssign ? "ENABLED" : "MANUAL"}</span>
-            </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
