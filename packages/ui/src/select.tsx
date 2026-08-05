@@ -74,7 +74,7 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
           else if (ref) ref.current = node;
         }}
         type="button"
-        className={`flex h-10 w-full items-center justify-between rounded-md border border-[#ebebeb] dark:border-[#333] bg-white dark:bg-[#1a1a1a] px-3 py-2 text-sm text-[#171717] dark:text-[#ededed] placeholder:text-[#888888] dark:placeholder:text-[#666] focus:outline-none focus:ring-2 focus:ring-[#171717] dark:focus:ring-[#5865F2] focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
+        className={`flex h-11 w-full items-center justify-between rounded-xl border border-[var(--border,rgba(0,0,0,0.1))] dark:border-[var(--border,rgba(255,255,255,0.1))] bg-[var(--card,#ffffff)] dark:bg-[var(--card,#121216)] px-4 py-2.5 text-sm text-[var(--foreground,#171717)] dark:text-[var(--foreground,#ffffff)] placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[var(--primary,#5865F2)]/25 focus:border-[var(--primary,#5865F2)] transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-50 ${className}`}
         onClick={() => onOpenChange(!open)}
         aria-expanded={open}
         {...props}
@@ -90,7 +90,7 @@ export const SelectTrigger = forwardRef<HTMLButtonElement, SelectTriggerProps>(
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="opacity-50"
+          className={`h-4 w-4 shrink-0 transition-transform duration-200 ${open ? "rotate-180 text-[var(--primary,#5865F2)]" : "opacity-50"}`}
         >
           <path d="m6 9 6 6 6-6" />
         </svg>
@@ -138,7 +138,7 @@ export const SelectContent = forwardRef<HTMLDivElement, SelectContentProps>(
     return (
       <div
         ref={ref}
-        className={`absolute z-50 mt-1 max-h-60 w-full overflow-auto rounded-md border border-[#ebebeb] dark:border-[#333] bg-white dark:bg-[#1a1a1a] p-1 text-[#171717] dark:text-[#ededed] shadow-md animate-in fade-in-0 zoom-in-95 ${className}`}
+        className={`absolute z-50 mt-1.5 max-h-60 w-full overflow-auto rounded-2xl border border-[var(--border,rgba(0,0,0,0.1))] dark:border-[var(--border,rgba(255,255,255,0.1))] bg-[var(--card,#ffffff)]/95 dark:bg-[var(--card,#121216)]/95 backdrop-blur-xl p-1.5 text-[var(--foreground,#171717)] dark:text-[var(--foreground,#ffffff)] shadow-2xl transition-all duration-200 ease-out animate-in fade-in-0 zoom-in-95 slide-in-from-top-2 ${className}`}
         role="listbox"
         {...props}
       >
@@ -167,8 +167,8 @@ export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
     return (
       <div
         ref={ref}
-        className={`relative flex w-full cursor-pointer select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none hover:bg-[#fafafa] dark:hover:bg-[#222] focus:bg-[#fafafa] dark:focus:bg-[#222] ${
-          isSelected ? "bg-[#fafafa] dark:bg-[#222] font-medium" : ""
+        className={`relative flex w-full cursor-pointer select-none items-center rounded-xl py-2.5 pl-9 pr-3 text-xs font-semibold outline-none transition-all duration-150 active:scale-[0.98] hover:bg-[var(--primary,#5865F2)]/10 hover:text-[var(--primary,#5865F2)] focus:bg-[var(--primary,#5865F2)]/10 focus:text-[var(--primary,#5865F2)] ${
+          isSelected ? "bg-[var(--primary,#5865F2)]/10 text-[var(--primary,#5865F2)] font-bold" : ""
         } ${className}`}
         role="option"
         aria-selected={isSelected}
@@ -179,15 +179,15 @@ export const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
         {...props}
       >
         {isSelected && (
-          <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+          <span className="absolute left-2.5 flex h-4 w-4 items-center justify-center text-[var(--primary,#5865F2)]">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
+              width="14"
+              height="14"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2"
+              strokeWidth="2.5"
               strokeLinecap="round"
               strokeLinejoin="round"
             >
