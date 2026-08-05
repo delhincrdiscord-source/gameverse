@@ -32,6 +32,7 @@ module.exports = {
         NODE_ENV: "production",
         PORT: 3090,
         DISCORD_BOT_TOKEN: process.env.DISCORD_BOT_TOKEN,
+        TOKEN_ENCRYPTION_KEY: "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef",
       },
       instances: 1,
       exec_mode: "fork",
