@@ -158,6 +158,8 @@ export async function sendRegistrationDiscordNotifications(payload: Registration
     return;
   }
 
+  botToken = botToken.trim().replace(/^Bot\s+/i, "").replace(/^["']|["']$/g, "");
+
   logger.info({ passNumber: payload.passNumber, discordUserId: payload.discordUserId }, "Initiating Discord registration notifications");
 
   const timestamp = new Date().toISOString();

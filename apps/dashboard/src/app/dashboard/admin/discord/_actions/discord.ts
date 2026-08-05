@@ -888,6 +888,8 @@ export async function sendDiscordDirectMessage(
       return createErrorResponse("BAD_REQUEST", "DISCORD_BOT_TOKEN is not configured in environment or Discord Settings.");
     }
 
+    token = token.trim().replace(/^Bot\s+/i, "").replace(/^["']|["']$/g, "");
+
     // Step 1: Open DM channel with target user
     const channelResp = await fetch("https://discord.com/api/v10/users/@me/channels", {
       method: "POST",
