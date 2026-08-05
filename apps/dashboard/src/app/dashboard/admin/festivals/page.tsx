@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Calendar, ChevronLeft, ChevronRight, Plus, Search, Filter, MoreHorizontal, Archive, Trash2, Copy, Eye, RefreshCw, CalendarDays, Clock, CheckCircle2, FileText,  } from "lucide-react";
+import { Calendar, ChevronLeft, ChevronRight, Plus, Search, Filter, MoreHorizontal, Archive, Trash2, Copy, Eye, RefreshCw, CalendarDays, Clock, CheckCircle2, FileText, Pencil } from "lucide-react";
 
 import { Button } from "@gameverse/ui/button";
 import { Input } from "@gameverse/ui/input";
@@ -472,8 +472,8 @@ export default function FestivalsPage() {
                             router.push(`/dashboard/admin/festivals/${festival.id}`)
                           }
                         >
-                          <Eye className="mr-2 h-4 w-4" />
-                          View Details
+                          <Eye className="h-4 w-4 text-blue-400" />
+                          <span>View Details</span>
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           onClick={() =>
@@ -482,24 +482,24 @@ export default function FestivalsPage() {
                             )
                           }
                         >
-                          <RefreshCw className="mr-2 h-4 w-4" />
-                          Edit
+                          <Pencil className="h-4 w-4 text-amber-400" />
+                          <span>Edit</span>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         {festival.status === "DRAFT" && (
                           <DropdownMenuItem
                             onClick={() => handleArchive(festival.id)}
                           >
-                            <Archive className="mr-2 h-4 w-4" />
-                            Archive
+                            <Archive className="h-4 w-4 text-purple-400" />
+                            <span>Archive</span>
                           </DropdownMenuItem>
                         )}
                         {festival.status === "ARCHIVED" && (
                           <DropdownMenuItem
                             onClick={() => handleRestore(festival.id)}
                           >
-                            <RefreshCw className="mr-2 h-4 w-4" />
-                            Restore
+                            <RefreshCw className="h-4 w-4 text-emerald-400" />
+                            <span>Restore</span>
                           </DropdownMenuItem>
                         )}
                         <DropdownMenuItem
@@ -509,16 +509,16 @@ export default function FestivalsPage() {
                             )
                           }
                         >
-                          <Copy className="mr-2 h-4 w-4" />
-                          Duplicate
+                          <Copy className="h-4 w-4 text-cyan-400" />
+                          <span>Duplicate</span>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                           onClick={() => handleDelete(festival.id)}
-                          className="text-destructive"
+                          className="text-red-400 hover:bg-red-500/10 hover:text-red-300 focus:bg-red-500/10 focus:text-red-300"
                         >
-                          <Trash2 className="mr-2 h-4 w-4" />
-                          Delete
+                          <Trash2 className="h-4 w-4" />
+                          <span>Delete</span>
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>

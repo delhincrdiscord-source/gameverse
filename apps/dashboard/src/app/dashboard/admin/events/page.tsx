@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Calendar, ChevronLeft, ChevronRight, Plus, Search, MoreHorizontal, Archive, Trash2, Copy, Eye, RefreshCw, CalendarDays, CheckCircle2, FileText, List, CalendarIcon, Users,  } from "lucide-react";
+import { Calendar, ChevronLeft, ChevronRight, Plus, Search, MoreHorizontal, Archive, Trash2, Copy, Eye, RefreshCw, CalendarDays, CheckCircle2, FileText, List, CalendarIcon, Users, Pencil } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { Button } from "@gameverse/ui/button";
@@ -756,8 +756,8 @@ export default function EventsPage() {
                                   )
                                 }
                               >
-                                <Eye className="mr-2 h-4 w-4" />
-                                View Details
+                                <Eye className="h-4 w-4 text-blue-400" />
+                                <span>View Details</span>
                               </DropdownMenuItem>
                               <DropdownMenuItem
                                 onClick={() =>
@@ -766,8 +766,8 @@ export default function EventsPage() {
                                   )
                                 }
                               >
-                                <RefreshCw className="mr-2 h-4 w-4" />
-                                Edit
+                                <Pencil className="h-4 w-4 text-amber-400" />
+                                <span>Edit</span>
                               </DropdownMenuItem>
                               <DropdownMenuSeparator />
                               {event.status === "DRAFT" && (
@@ -777,8 +777,8 @@ export default function EventsPage() {
                                     setPublishDialogOpen(true);
                                   }}
                                 >
-                                  <Globe className="mr-2 h-4 w-4" />
-                                  Publish
+                                  <Globe className="h-4 w-4 text-emerald-400" />
+                                  <span>Publish</span>
                                 </DropdownMenuItem>
                               )}
                               {event.status === "PUBLISHED" && (
@@ -788,24 +788,24 @@ export default function EventsPage() {
                                     setPublishDialogOpen(true);
                                   }}
                                 >
-                                  <ArrowUpFromLine className="mr-2 h-4 w-4" />
-                                  Unpublish
+                                  <ArrowUpFromLine className="h-4 w-4 text-orange-400" />
+                                  <span>Unpublish</span>
                                 </DropdownMenuItem>
                               )}
                               {event.status !== "ARCHIVED" && (
                                 <DropdownMenuItem
                                   onClick={() => handleArchive(event.id)}
                                 >
-                                  <Archive className="mr-2 h-4 w-4" />
-                                  Archive
+                                  <Archive className="h-4 w-4 text-purple-400" />
+                                  <span>Archive</span>
                                 </DropdownMenuItem>
                               )}
                               {event.status === "ARCHIVED" && (
                                 <DropdownMenuItem
                                   onClick={() => handleRestore(event.id)}
                                 >
-                                  <RefreshCw className="mr-2 h-4 w-4" />
-                                  Restore
+                                  <RefreshCw className="h-4 w-4 text-emerald-400" />
+                                  <span>Restore</span>
                                 </DropdownMenuItem>
                               )}
                               <DropdownMenuItem
@@ -814,8 +814,8 @@ export default function EventsPage() {
                                   setDuplicateDialogOpen(true);
                                 }}
                               >
-                                <Copy className="mr-2 h-4 w-4" />
-                                Duplicate
+                                <Copy className="h-4 w-4 text-cyan-400" />
+                                <span>Duplicate</span>
                               </DropdownMenuItem>
                               <DropdownMenuSeparator />
                               <DropdownMenuItem
@@ -823,10 +823,10 @@ export default function EventsPage() {
                                   setSelectedEvent(event);
                                   setDeleteDialogOpen(true);
                                 }}
-                                className="text-destructive"
+                                className="text-red-400 hover:bg-red-500/10 hover:text-red-300 focus:bg-red-500/10 focus:text-red-300"
                               >
-                                <Trash2 className="mr-2 h-4 w-4" />
-                                Delete
+                                <Trash2 className="h-4 w-4" />
+                                <span>Delete</span>
                               </DropdownMenuItem>
                             </DropdownMenuContent>
                           </DropdownMenu>
