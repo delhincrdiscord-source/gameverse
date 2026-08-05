@@ -70,8 +70,8 @@ export default function AutomationsPage() {
   const [createForm, setCreateForm] = useState({
     name: "",
     description: "",
-    trigger: "" as AutomationTrigger,
-    action: "" as AutomationAction,
+    trigger: "" as unknown as AutomationTrigger,
+    action: "" as unknown as AutomationAction,
     channelId: "",
     roleId: "",
     messageTemplate: "",
@@ -117,8 +117,8 @@ export default function AutomationsPage() {
         setCreateForm({
           name: "",
           description: "",
-          trigger: "",
-          action: "",
+          trigger: "" as unknown as AutomationTrigger,
+          action: "" as unknown as AutomationAction,
           channelId: "",
           roleId: "",
           messageTemplate: "",

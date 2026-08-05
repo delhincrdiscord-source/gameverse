@@ -59,7 +59,7 @@ export default function CreateNotificationPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [form, setForm] = useState({
     userId: "",
-    type: "" as NotificationType,
+    type: "" as unknown as NotificationType,
     title: "",
     message: "",
     link: "",
