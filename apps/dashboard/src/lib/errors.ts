@@ -34,17 +34,24 @@ export function createErrorResponse(code: string, message?: string): ActionError
   };
 }
 
+import { ZodError } from "zod";
+
 export function handleActionError(error: unknown): ActionError {
   if (error instanceof AuthError) {
     return createErrorResponse(error.code, error.message);
   }
 
-  if (error instanceof Error) {
-    log.error({ err: error }, error.message);
-  } else {
-    log.error({ err: error }, "Unknown error");
+  if (error instanceof ZodError) {
+    const message = error.issues.map((issue) => issue.message).join(", ");
+    return createErrorResponse("VALIDATION_ERROR", message);
   }
 
+  if (error instanceof Error) {
+    log.error({ err: error }, error.message);
+    return createErrorResponse("VALIDATION_ERROR", error.message);
+  }
+
+  log.error({ err: error }, "Unknown error");
   return createErrorResponse("INTERNAL_ERROR");
 }
 

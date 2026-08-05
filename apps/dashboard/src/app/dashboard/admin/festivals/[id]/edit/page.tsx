@@ -279,10 +279,10 @@ export default function FestivalEditPage({
       if (result.success) {
         router.push("/dashboard/admin/festivals");
       } else {
-        setGlobalError(!result.success ? (result.error ?? "Failed to save festival") : "");
+        setGlobalError(result.error || "Failed to save festival");
       }
-    } catch {
-      setGlobalError("An unexpected error occurred");
+    } catch (err: any) {
+      setGlobalError(err?.message || "An unexpected error occurred");
     } finally {
       setIsSaving(false);
     }

@@ -24,6 +24,8 @@ export const announcementVisibilitySchema = z.enum([
   "ADMINS_ONLY",
 ]);
 
+const flexibleDateString = z.string().refine((val) => !isNaN(new Date(val).getTime()), "Invalid date format");
+
 export const createAnnouncementSchema = z.object({
   title: z
     .string()
@@ -48,8 +50,8 @@ export const createAnnouncementSchema = z.object({
   priority: announcementPrioritySchema.optional().default("NORMAL"),
   visibility: announcementVisibilitySchema.optional().default("PUBLIC"),
   status: announcementStatusSchema.optional().default("DRAFT"),
-  publishAt: z.string().datetime().optional().nullable(),
-  expireAt: z.string().datetime().optional().nullable(),
+  publishAt: flexibleDateString.optional().nullable(),
+  expireAt: flexibleDateString.optional().nullable(),
   tags: z.array(z.string()).optional().default([]),
   isPinned: z.boolean().optional().default(false),
 });
@@ -81,8 +83,8 @@ export const updateAnnouncementSchema = z.object({
   priority: announcementPrioritySchema.optional(),
   visibility: announcementVisibilitySchema.optional(),
   status: announcementStatusSchema.optional(),
-  publishAt: z.string().datetime().optional().nullable(),
-  expireAt: z.string().datetime().optional().nullable(),
+  publishAt: flexibleDateString.optional().nullable(),
+  expireAt: flexibleDateString.optional().nullable(),
   tags: z.array(z.string()).optional(),
   isPinned: z.boolean().optional(),
 });

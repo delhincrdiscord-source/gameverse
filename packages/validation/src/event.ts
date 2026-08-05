@@ -19,6 +19,8 @@ export const eventVisibilitySchema = z.enum([
   "HIDDEN",
 ]);
 
+const flexibleDateString = z.string().refine((val) => !isNaN(new Date(val).getTime()), "Invalid date format");
+
 export const createCommunityEventSchema = z
   .object({
     festivalId: z.string().uuid("Invalid festival ID"),
@@ -49,8 +51,8 @@ export const createCommunityEventSchema = z
       .url("Invalid thumbnail URL")
       .optional()
       .or(z.literal("")),
-    startDate: z.string().datetime("Invalid start date format"),
-    endDate: z.string().datetime("Invalid end date format"),
+    startDate: flexibleDateString,
+    endDate: flexibleDateString,
     timezone: z.string().optional().default("Asia/Kolkata"),
     location: z
       .string()
@@ -143,8 +145,8 @@ export const updateCommunityEventSchema = z
       .url("Invalid thumbnail URL")
       .optional()
       .or(z.literal("")),
-    startDate: z.string().datetime("Invalid start date format").optional(),
-    endDate: z.string().datetime("Invalid end date format").optional(),
+    startDate: flexibleDateString.optional(),
+    endDate: flexibleDateString.optional(),
     timezone: z.string().optional(),
     location: z
       .string()

@@ -48,13 +48,15 @@ export const updateRegistrationSchema = z.object({
 
 export type UpdateRegistrationInput = z.infer<typeof updateRegistrationSchema>;
 
+const flexibleDateString = z.string().refine((val) => !isNaN(new Date(val).getTime()), "Invalid date format");
+
 export const registrationFiltersSchema = z.object({
   search: z.string().optional(),
   festivalId: z.string().uuid().optional(),
   eventId: z.string().uuid().optional(),
   status: registrationStatusSchema.optional(),
-  dateFrom: z.string().datetime().optional(),
-  dateTo: z.string().datetime().optional(),
+  dateFrom: flexibleDateString.optional(),
+  dateTo: flexibleDateString.optional(),
   sortBy: z
     .enum(["registeredAt", "status", "user", "event"])
     .optional()

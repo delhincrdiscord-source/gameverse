@@ -18,6 +18,8 @@ export const festivalVisibilitySchema = z.enum([
   "UNLISTED",
 ]);
 
+const flexibleDateString = z.string().refine((val) => !isNaN(new Date(val).getTime()), "Invalid date format");
+
 export const createFestivalSchema = z
   .object({
     name: z
@@ -49,10 +51,10 @@ export const createFestivalSchema = z
       .default("#5865F2"),
     discordInvite: z.string().url("Invalid Discord invite URL").optional().or(z.literal("")),
     registrationEnabled: z.boolean().optional().default(false),
-    registrationStart: z.string().datetime("Invalid registration start date").optional(),
-    registrationEnd: z.string().datetime("Invalid registration end date").optional(),
-    startDate: z.string().datetime("Invalid start date format"),
-    endDate: z.string().datetime("Invalid end date format"),
+    registrationStart: flexibleDateString.optional(),
+    registrationEnd: flexibleDateString.optional(),
+    startDate: flexibleDateString,
+    endDate: flexibleDateString,
     timezone: z.string().optional().default("Asia/Kolkata"),
     visibility: festivalVisibilitySchema.optional().default("PUBLIC"),
   })
@@ -119,10 +121,10 @@ export const updateFestivalSchema = z
       .optional(),
     discordInvite: z.string().url("Invalid Discord invite URL").optional().or(z.literal("")),
     registrationEnabled: z.boolean().optional(),
-    registrationStart: z.string().datetime("Invalid registration start date").optional(),
-    registrationEnd: z.string().datetime("Invalid registration end date").optional(),
-    startDate: z.string().datetime("Invalid start date format").optional(),
-    endDate: z.string().datetime("Invalid end date format").optional(),
+    registrationStart: flexibleDateString.optional(),
+    registrationEnd: flexibleDateString.optional(),
+    startDate: flexibleDateString.optional(),
+    endDate: flexibleDateString.optional(),
     timezone: z.string().optional(),
     visibility: festivalVisibilitySchema.optional(),
     status: festivalStatusSchema.optional(),
