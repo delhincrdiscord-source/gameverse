@@ -65,7 +65,7 @@ export function DuplicateCategoryDialog({
 
     if (result.success && result.data) {
       onOpenChange(false);
-      router.push(`/dashboard/categories/${result.data.id}/edit`);
+      router.push(`/dashboard/admin/categories/${result.data.id}/edit`);
     } else {
       setError(result.success ? "" : (result.error ?? "Failed to duplicate category"));
     }

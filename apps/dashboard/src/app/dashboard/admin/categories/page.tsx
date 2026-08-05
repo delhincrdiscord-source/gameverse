@@ -221,7 +221,7 @@ export default function CategoriesPage() {
             Organize your events into categories
           </p>
         </div>
-        <Button onClick={() => router.push("/dashboard/categories/new")}>
+        <Button onClick={() => router.push("/dashboard/admin/categories/new")}>
           <Plus className="mr-2 h-4 w-4" />
           Create Category
         </Button>
@@ -390,7 +390,7 @@ export default function CategoriesPage() {
                   <Button
                     className="mt-4"
                     onClick={() =>
-                      router.push("/dashboard/categories/new")
+                      router.push("/dashboard/admin/categories/new")
                     }
                   >
                     <Plus className="mr-2 h-4 w-4" />
@@ -463,7 +463,7 @@ export default function CategoriesPage() {
                         <button
                           onClick={() =>
                             router.push(
-                              `/dashboard/categories/${category.id}`
+                              `/dashboard/admin/categories/${category.id}`
                             )
                           }
                           className="font-medium hover:underline truncate"
@@ -506,7 +506,7 @@ export default function CategoriesPage() {
                             <DropdownMenuItem
                               onClick={() =>
                                 router.push(
-                                  `/dashboard/categories/${category.id}`
+                                  `/dashboard/admin/categories/${category.id}`
                                 )
                               }
                             >
@@ -516,7 +516,7 @@ export default function CategoriesPage() {
                             <DropdownMenuItem
                               onClick={() =>
                                 router.push(
-                                  `/dashboard/categories/${category.id}/edit`
+                                  `/dashboard/admin/categories/${category.id}/edit`
                                 )
                               }
                             >

@@ -165,7 +165,7 @@ export default function CreateEventPage() {
     const result = await createEvent(formData);
 
     if (result.success && result.data) {
-      router.push(`/dashboard/events/${result.data.id}`);
+      router.push(`/dashboard/admin/events/${result.data.id}`);
     } else {
       setError(result.success ? "" : (result.error ?? "Failed to create event"));
     }

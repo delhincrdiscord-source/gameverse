@@ -100,7 +100,7 @@ export default function AnnouncementDetailPage({
         slug: `${announcement.slug}-copy`,
       });
       if (result.success && result.data) {
-        router.push(`/dashboard/announcements/${result.data.id}/edit`);
+        router.push(`/dashboard/admin/announcements/${result.data.id}/edit`);
       }
     });
   };
@@ -220,7 +220,7 @@ export default function AnnouncementDetailPage({
           <Button
             variant="outline"
             onClick={() =>
-              router.push(`/dashboard/announcements/${id}/edit`)
+              router.push(`/dashboard/admin/announcements/${id}/edit`)
             }
           >
             <Edit className="mr-2 h-4 w-4" />
@@ -293,7 +293,7 @@ export default function AnnouncementDetailPage({
                       className="h-auto p-0 text-sm"
                       onClick={() =>
                         router.push(
-                          `/dashboard/festivals/${announcement.festival!.id}`
+                          `/dashboard/admin/festivals/${announcement.festival!.id}`
                         )
                       }
                     >

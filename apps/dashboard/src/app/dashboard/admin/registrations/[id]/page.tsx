@@ -454,7 +454,7 @@ export default function RegistrationDetailPage() {
                   size="sm"
                   onClick={() =>
                     router.push(
-                      `/dashboard/events/${registration.event!.id}`
+                      `/dashboard/admin/events/${registration.event!.id}`
                     )
                   }
                 >

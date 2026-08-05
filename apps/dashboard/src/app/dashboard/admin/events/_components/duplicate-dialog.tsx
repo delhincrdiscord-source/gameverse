@@ -69,7 +69,7 @@ export function DuplicateEventDialog({
 
     if (result.success && result.data) {
       onOpenChange(false);
-      router.push(`/dashboard/events/${result.data.id}/edit`);
+      router.push(`/dashboard/admin/events/${result.data.id}/edit`);
     } else {
       setError(result.success ? "" : (result.error ?? "Failed to duplicate event"));
     }

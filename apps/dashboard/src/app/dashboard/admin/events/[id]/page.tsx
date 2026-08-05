@@ -234,7 +234,7 @@ export default function EventDetailPage({
           <Button
             variant="outline"
             onClick={() =>
-              router.push(`/dashboard/events/${id}/edit`)
+              router.push(`/dashboard/admin/events/${id}/edit`)
             }
           >
             <Edit className="mr-2 h-4 w-4" />
@@ -317,7 +317,7 @@ export default function EventDetailPage({
                       className="h-auto p-0 text-sm"
                       onClick={() =>
                         router.push(
-                          `/dashboard/categories/${event.category.id}`
+                          `/dashboard/admin/categories/${event.category.id}`
                         )
                       }
                     >
@@ -339,7 +339,7 @@ export default function EventDetailPage({
                       className="h-auto p-0 text-sm"
                       onClick={() =>
                         router.push(
-                          `/dashboard/festivals/${event.festival.id}`
+                          `/dashboard/admin/festivals/${event.festival.id}`
                         )
                       }
                     >

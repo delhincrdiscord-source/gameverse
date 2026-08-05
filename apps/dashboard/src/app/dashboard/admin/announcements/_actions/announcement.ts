@@ -417,7 +417,7 @@ async function createNotificationsForAnnouncement(
       type: "ANNOUNCEMENT" as const,
       title: `New Announcement: ${title}`,
       message: `A new announcement has been published. Click to view details.`,
-      link: `/dashboard/announcements/${announcementId}`,
+      link: `/dashboard/admin/announcements/${announcementId}`,
       metadata: { announcementId, festivalId },
     }));
 

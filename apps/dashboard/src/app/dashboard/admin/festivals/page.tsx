@@ -230,7 +230,7 @@ export default function FestivalsPage() {
             Manage your festivals and events
           </p>
         </div>
-        <Button onClick={() => router.push("/dashboard/festivals/new")}>
+        <Button onClick={() => router.push("/dashboard/admin/festivals/new")}>
           <Plus className="mr-2 h-4 w-4" />
           Create Festival
         </Button>
@@ -387,7 +387,7 @@ export default function FestivalsPage() {
                 {!filters.search && filters.status === "ALL" && (
                   <Button
                     className="mt-4"
-                    onClick={() => router.push("/dashboard/festivals/new")}
+                    onClick={() => router.push("/dashboard/admin/festivals/new")}
                   >
                     <Plus className="mr-2 h-4 w-4" />
                     Create Festival
@@ -428,7 +428,7 @@ export default function FestivalsPage() {
                       <div className="flex items-center gap-2">
                         <button
                           onClick={() =>
-                            router.push(`/dashboard/festivals/${festival.id}`)
+                            router.push(`/dashboard/admin/festivals/${festival.id}`)
                           }
                           className="font-medium hover:underline truncate"
                         >
@@ -469,7 +469,7 @@ export default function FestivalsPage() {
                       <DropdownMenuContent align="end">
                         <DropdownMenuItem
                           onClick={() =>
-                            router.push(`/dashboard/festivals/${festival.id}`)
+                            router.push(`/dashboard/admin/festivals/${festival.id}`)
                           }
                         >
                           <Eye className="mr-2 h-4 w-4" />
@@ -478,7 +478,7 @@ export default function FestivalsPage() {
                         <DropdownMenuItem
                           onClick={() =>
                             router.push(
-                              `/dashboard/festivals/${festival.id}/edit`
+                              `/dashboard/admin/festivals/${festival.id}/edit`
                             )
                           }
                         >
@@ -505,7 +505,7 @@ export default function FestivalsPage() {
                         <DropdownMenuItem
                           onClick={() =>
                             router.push(
-                              `/dashboard/festivals/${festival.id}/duplicate`
+                              `/dashboard/admin/festivals/${festival.id}/duplicate`
                             )
                           }
                         >

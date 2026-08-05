@@ -99,8 +99,66 @@ export async function getPointsLeaderboard(limit = 20) {
   }
 }
 
-export async function adjustUserPoints(userId: string, points: number, reason: string, source = "ADMIN_ADJUSTMENT") {
+async function findUserId(userIdentifier: string): Promise<string | null> {
+  const identifier = userIdentifier.trim();
+  if (!identifier) return null;
+
+  // 1. Valid UUID check
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  if (uuidRegex.test(identifier)) {
+    const userById = await prisma.user.findUnique({
+      where: { id: identifier },
+      select: { id: true },
+    });
+    if (userById) return userById.id;
+  }
+
+  // 2. Search User by email
+  const userByEmail = await prisma.user.findFirst({
+    where: { email: { equals: identifier, mode: "insensitive" } },
+    select: { id: true },
+  });
+  if (userByEmail) return userByEmail.id;
+
+  // 3. Search User by username
+  const userByUsername = await prisma.user.findFirst({
+    where: { username: { equals: identifier, mode: "insensitive" } },
+    select: { id: true },
+  });
+  if (userByUsername) return userByUsername.id;
+
+  // 4. Search User by globalName
+  const userByGlobalName = await prisma.user.findFirst({
+    where: { globalName: { equals: identifier, mode: "insensitive" } },
+    select: { id: true },
+  });
+  if (userByGlobalName) return userByGlobalName.id;
+
+  // 5. Search Registration by discordUsername or email
+  const reg = await prisma.registration.findFirst({
+    where: {
+      OR: [
+        { discordUsername: { equals: identifier, mode: "insensitive" } },
+        { email: { equals: identifier, mode: "insensitive" } },
+      ],
+    },
+    select: { userId: true },
+  });
+  if (reg?.userId) return reg.userId;
+
+  return null;
+}
+
+export async function adjustUserPoints(userIdentifier: string, points: number, reason: string, source = "ADMIN_ADJUSTMENT") {
   try {
+    const userId = await findUserId(userIdentifier);
+    if (!userId) {
+      return {
+        success: false,
+        error: `User "${userIdentifier}" not found. Please provide a valid User ID (UUID), Email, Username, or Discord username.`
+      };
+    }
+
     const pointEntry = await prisma.userPoints.create({
       data: {
         userId,
@@ -134,8 +192,16 @@ export async function getRecentPointLogs(limit = 15) {
   }
 }
 
-export async function assignEventWinner(userId: string, eventTitle: string, position: "1st" | "2nd" | "3rd", rewardPoints = 500) {
+export async function assignEventWinner(userIdentifier: string, eventTitle: string, position: "1st" | "2nd" | "3rd", rewardPoints = 500) {
   try {
+    const userId = await findUserId(userIdentifier);
+    if (!userId) {
+      return {
+        success: false,
+        error: `User "${userIdentifier}" not found. Please provide a valid User ID (UUID), Email, Username, or Discord username.`
+      };
+    }
+
     const reason = `Winner (${position} Place) - ${eventTitle}`;
     await prisma.userPoints.create({
       data: {

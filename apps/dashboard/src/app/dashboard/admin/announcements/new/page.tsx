@@ -134,7 +134,7 @@ export default function CreateAnnouncementPage() {
     });
 
     if (result.success && result.data) {
-      router.push(`/dashboard/announcements/${result.data.id}`);
+      router.push(`/dashboard/admin/announcements/${result.data.id}`);
     } else {
       setError(result.success ? "" : (result.error ?? "Failed to create announcement"));
     }
@@ -510,7 +510,7 @@ export default function CreateAnnouncementPage() {
                 authorId: "admin",
               });
               if (result.success && result.data) {
-                router.push(`/dashboard/announcements/${result.data.id}`);
+                router.push(`/dashboard/admin/announcements/${result.data.id}`);
               } else {
                 setError(result.success ? "" : (result.error ?? "Failed to save draft"));
               }

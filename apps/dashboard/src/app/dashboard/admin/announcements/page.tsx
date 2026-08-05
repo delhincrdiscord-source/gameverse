@@ -301,7 +301,7 @@ export default function AnnouncementsPage() {
             Manage announcements, news, and updates for your community
           </p>
         </div>
-        <Button onClick={() => router.push("/dashboard/announcements/new")}>
+        <Button onClick={() => router.push("/dashboard/admin/announcements/new")}>
           <Plus className="mr-2 h-4 w-4" />
           Create Announcement
         </Button>
@@ -598,7 +598,7 @@ export default function AnnouncementsPage() {
                     <Button
                       className="mt-4"
                       onClick={() =>
-                        router.push("/dashboard/announcements/new")
+                        router.push("/dashboard/admin/announcements/new")
                       }
                     >
                       <Plus className="mr-2 h-4 w-4" />
@@ -664,7 +664,7 @@ export default function AnnouncementsPage() {
                           <button
                             onClick={() =>
                               router.push(
-                                `/dashboard/announcements/${announcement.id}`
+                                `/dashboard/admin/announcements/${announcement.id}`
                               )
                             }
                             className="font-medium hover:underline truncate"
@@ -724,7 +724,7 @@ export default function AnnouncementsPage() {
                           <DropdownMenuItem
                             onClick={() =>
                               router.push(
-                                `/dashboard/announcements/${announcement.id}`
+                                `/dashboard/admin/announcements/${announcement.id}`
                               )
                             }
                           >
@@ -734,7 +734,7 @@ export default function AnnouncementsPage() {
                           <DropdownMenuItem
                             onClick={() =>
                               router.push(
-                                `/dashboard/announcements/${announcement.id}/edit`
+                                `/dashboard/admin/announcements/${announcement.id}/edit`
                               )
                             }
                           >

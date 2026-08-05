@@ -193,7 +193,7 @@ export default function FestivalDetailPage({
           <Button
             variant="outline"
             onClick={() =>
-              router.push(`/dashboard/festivals/${festival.id}/edit`)
+              router.push(`/dashboard/admin/festivals/${festival.id}/edit`)
             }
           >
             <Settings className="mr-2 h-4 w-4" />

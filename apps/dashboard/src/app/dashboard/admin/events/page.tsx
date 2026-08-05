@@ -357,7 +357,7 @@ export default function EventsPage() {
             Manage your community events and activities
           </p>
         </div>
-        <Button onClick={() => router.push("/dashboard/events/new")}>
+        <Button onClick={() => router.push("/dashboard/admin/events/new")}>
           <Plus className="mr-2 h-4 w-4" />
           Create Event
         </Button>
@@ -608,7 +608,7 @@ export default function EventsPage() {
                         <Button
                           className="mt-4"
                           onClick={() =>
-                            router.push("/dashboard/events/new")
+                            router.push("/dashboard/admin/events/new")
                           }
                         >
                           <Plus className="mr-2 h-4 w-4" />
@@ -671,7 +671,7 @@ export default function EventsPage() {
                               <button
                                 onClick={() =>
                                   router.push(
-                                    `/dashboard/events/${event.id}`
+                                    `/dashboard/admin/events/${event.id}`
                                   )
                                 }
                                 className="font-medium hover:underline truncate"
@@ -752,7 +752,7 @@ export default function EventsPage() {
                               <DropdownMenuItem
                                 onClick={() =>
                                   router.push(
-                                    `/dashboard/events/${event.id}`
+                                    `/dashboard/admin/events/${event.id}`
                                   )
                                 }
                               >
@@ -762,7 +762,7 @@ export default function EventsPage() {
                               <DropdownMenuItem
                                 onClick={() =>
                                   router.push(
-                                    `/dashboard/events/${event.id}/edit`
+                                    `/dashboard/admin/events/${event.id}/edit`
                                   )
                                 }
                               >

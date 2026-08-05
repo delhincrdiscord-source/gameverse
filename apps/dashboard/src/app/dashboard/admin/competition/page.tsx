@@ -273,10 +273,10 @@ export default function CompetitionCenterPage() {
             </h2>
             <form onSubmit={handlePointAdjust} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="userId">User ID (UUID or Email)</Label>
+                <Label htmlFor="userId">User ID (UUID, Username, Email, or Discord Handle)</Label>
                 <Input
                   id="userId"
-                  placeholder="Enter User ID..."
+                  placeholder="e.g. admin, user@example.com, or UUID..."
                   value={adjustUserId}
                   onChange={(e) => setAdjustUserId(e.target.value)}
                 />

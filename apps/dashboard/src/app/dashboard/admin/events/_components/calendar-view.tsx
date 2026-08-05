@@ -263,7 +263,7 @@ export function CalendarView({ festivalId }: CalendarViewProps) {
                               size="sm"
                               className="w-full"
                               onClick={() =>
-                                router.push(`/dashboard/events/${event.id}`)
+                                router.push(`/dashboard/admin/events/${event.id}`)
                               }
                             >
                               View Details

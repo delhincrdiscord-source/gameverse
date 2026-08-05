@@ -61,7 +61,7 @@ export function DuplicateAnnouncementDialog({
 
     if (result.success && result.data) {
       onOpenChange(false);
-      router.push(`/dashboard/announcements/${result.data.id}/edit`);
+      router.push(`/dashboard/admin/announcements/${result.data.id}/edit`);
     } else {
       setError(result.success ? "" : (result.error ?? "Failed to duplicate announcement"));
     }

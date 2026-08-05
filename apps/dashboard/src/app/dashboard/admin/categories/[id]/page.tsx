@@ -194,7 +194,7 @@ export default function CategoryDetailPage({
           <Button
             variant="outline"
             onClick={() =>
-              router.push(`/dashboard/categories/${category.id}/edit`)
+              router.push(`/dashboard/admin/categories/${category.id}/edit`)
             }
           >
             <Settings className="mr-2 h-4 w-4" />

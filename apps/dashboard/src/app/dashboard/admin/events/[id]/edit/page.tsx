@@ -208,7 +208,7 @@ export default function EditEventPage({
     const result = await updateEvent(id, formData);
 
     if (result.success && result.data) {
-      router.push(`/dashboard/events/${id}`);
+      router.push(`/dashboard/admin/events/${id}`);
     } else {
       setError(!result.success ? (result.error ?? "Failed to update event") : "Failed to update event");
     }
@@ -274,7 +274,7 @@ export default function EditEventPage({
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => router.push(`/dashboard/events/${id}`)}
+          onClick={() => router.push(`/dashboard/admin/events/${id}`)}
         >
           <ArrowLeft className="h-4 w-4" />
         </Button>
@@ -721,7 +721,7 @@ export default function EditEventPage({
           <Button
             type="button"
             variant="outline"
-            onClick={() => router.push(`/dashboard/events/${id}`)}
+            onClick={() => router.push(`/dashboard/admin/events/${id}`)}
           >
             Cancel
           </Button>

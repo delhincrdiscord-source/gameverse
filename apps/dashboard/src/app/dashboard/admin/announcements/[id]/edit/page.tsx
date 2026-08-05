@@ -154,7 +154,7 @@ export default function EditAnnouncementPage({
     const result = await updateAnnouncement(id, formData);
 
     if (result.success && result.data) {
-      router.push(`/dashboard/announcements/${id}`);
+      router.push(`/dashboard/admin/announcements/${id}`);
     } else {
       setError(result.success ? "" : (result.error ?? "Failed to update announcement"));
     }
@@ -220,7 +220,7 @@ export default function EditAnnouncementPage({
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => router.push(`/dashboard/announcements/${id}`)}
+          onClick={() => router.push(`/dashboard/admin/announcements/${id}`)}
         >
           <ArrowLeft className="h-4 w-4" />
         </Button>
@@ -558,7 +558,7 @@ export default function EditAnnouncementPage({
           <Button
             type="button"
             variant="outline"
-            onClick={() => router.push(`/dashboard/announcements/${id}`)}
+            onClick={() => router.push(`/dashboard/admin/announcements/${id}`)}
           >
             Cancel
           </Button>
