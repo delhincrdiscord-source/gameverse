@@ -80,8 +80,8 @@ export default function NotificationsPage() {
   });
   const [filters, setFilters] = useState({
     search: "",
-    type: "ALL\" as NotificationType | \"ALL",
-    readFilter: "ALL\" as \"ALL\" | \"READ\" | \"UNREAD",
+    type: "ALL" as NotificationType | "ALL",
+    readFilter: "ALL" as "ALL" | "READ" | "UNREAD",
     dateFrom: "",
     dateTo: "",
   });

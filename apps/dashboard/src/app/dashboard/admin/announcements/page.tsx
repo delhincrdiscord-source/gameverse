@@ -99,9 +99,9 @@ export default function AnnouncementsPage() {
   });
   const [filters, setFilters] = useState({
     search: "",
-    status: "ALL\" as AnnouncementStatus | \"ALL",
-    priority: "ALL\" as AnnouncementPriority | \"ALL",
-    visibility: "ALL\" as AnnouncementVisibility | \"ALL",
+    status: "ALL" as AnnouncementStatus | "ALL",
+    priority: "ALL" as AnnouncementPriority | "ALL",
+    visibility: "ALL" as AnnouncementVisibility | "ALL",
     festivalId: "ALL",
     dateFrom: "",
     dateTo: "",

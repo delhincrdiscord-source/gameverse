@@ -80,8 +80,8 @@ export default function NotificationQueuePage() {
     totalPages: 0,
   });
   const [filters, setFilters] = useState({
-    status: "ALL\" as DeliveryStatus | \"ALL",
-    channel: "ALL\" as NotificationChannel | \"ALL",
+    status: "ALL" as DeliveryStatus | "ALL",
+    channel: "ALL" as NotificationChannel | "ALL",
   });
   const [isLoading, setIsLoading] = useState(true);
 

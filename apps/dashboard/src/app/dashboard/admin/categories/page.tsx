@@ -82,8 +82,8 @@ export default function CategoriesPage() {
   });
   const [filters, setFilters] = useState({
     search: "",
-    sortBy: "sortOrder\" as \"name\" | \"sortOrder\" | \"createdAt",
-    sortOrder: "asc\" as \"asc\" | \"desc",
+    sortBy: "sortOrder" as "name" | "sortOrder" | "createdAt",
+    sortOrder: "asc" as "asc" | "desc",
   });
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);

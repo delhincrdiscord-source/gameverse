@@ -83,7 +83,7 @@ export default function FestivalsPage() {
   });
   const [filters, setFilters] = useState({
     search: "",
-    status: "ALL\" as FestivalStatus | \"ALL",
+    status: "ALL" as FestivalStatus | "ALL",
   });
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
